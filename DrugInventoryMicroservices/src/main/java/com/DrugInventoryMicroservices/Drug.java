@@ -8,11 +8,12 @@ public class Drug {
 	@Id
 	private int id;
 	private String drugName;
-	private String price;
+	private long price;
 	public Drug() {
 		super();
+		// TODO Auto-generated constructor stub
 	}
-	public Drug(int id, String drugName, String price) {
+	public Drug(int id, String drugName, long price) {
 		super();
 		this.id = id;
 		this.drugName = drugName;
@@ -30,21 +31,14 @@ public class Drug {
 	public void setDrugName(String drugName) {
 		this.drugName = drugName;
 	}
-	public String getPrice() {
+	public long getPrice() {
 		return price;
 	}
-	public void setPrice(String price) {
+	public void setPrice(long price) {
 		this.price = price;
 	}
 	
 	
+
+
 }
-	
-	
-		
-	
-	
-	
-	
-
-
