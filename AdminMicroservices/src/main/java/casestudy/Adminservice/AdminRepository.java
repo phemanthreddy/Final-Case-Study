@@ -1,5 +1,8 @@
 package casestudy.Adminservice;
 
-public class AdminRepository{
+import org.springframework.data.mongodb.repository.MongoRepository;
+
+public interface AdminRepository extends MongoRepository<Admin, Integer>{
+	
 
 }

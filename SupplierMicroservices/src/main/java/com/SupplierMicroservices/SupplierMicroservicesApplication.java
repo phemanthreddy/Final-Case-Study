@@ -19,16 +19,19 @@ import springfox.documentation.swagger2.annotations.EnableSwagger2;
 @EnableEurekaClient
 @EnableSwagger2
 @EnableWebMvc
-
-class SupplierMicroservicesApplication {
+public class SupplierMicroservicesApplication {
 
 	public static void main(String[] args) {
 		SpringApplication.run(SupplierMicroservicesApplication.class, args);
 	}
-
-
+	
+	@Bean
+	public Docket productApi() {
+		return new Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.paths(PathSelectors.ant("/*"))
+				.apis(RequestHandlerSelectors.basePackage("com.SupplierMicroservices"))
+				.build();
+	
+	}
 }
-
-	
-	
-	
