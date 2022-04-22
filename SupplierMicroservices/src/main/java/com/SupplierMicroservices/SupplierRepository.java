@@ -2,6 +2,6 @@ package com.SupplierMicroservices;
 
 import org.springframework.data.mongodb.repository.MongoRepository;
 
-public interface SupplierRepository extends MongoRepository<Supplier, Integer> {
+public interface SupplierRepository extends MongoRepository<Supplier, String> {
 
 }

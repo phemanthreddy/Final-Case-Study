@@ -7,25 +7,27 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Admin {
 	
 	@Id
-	private int id;
+	private String id;
 	private String name;
-	private String email;
 	private long phoneNumber;
+	private String email;
+	private String password;
 	public Admin() {
 		super();
-	
+		
 	}
-	public Admin(int id, String name, String email, long phoneNumber) {
+	public Admin(String id, String name, long phoneNumber, String email, String password) {
 		super();
 		this.id = id;
 		this.name = name;
-		this.email = email;
 		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.password = password;
 	}
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -34,18 +36,24 @@ public class Admin {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public String getEmail() {
-		return email;
-	}
-	public void setEmail(String email) {
-		this.email = email;
-	}
 	public long getPhoneNumber() {
 		return phoneNumber;
 	}
 	public void setPhoneNumber(long phoneNumber) {
 		this.phoneNumber = phoneNumber;
 	}
+	public String getEmail() {
+		return email;
+	}
+	public void setEmail(String email) {
+		this.email = email;
+	}
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	
-
+	
 }

@@ -7,7 +7,7 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Supplier {
 	
 	@Id
-	private int id;
+	private String id;
 	private String name;
 	private long phoneNumber;
 	private String email;
@@ -15,12 +15,21 @@ public class Supplier {
 	private long drugPrice;
 	public Supplier() {
 		super();
-
+	
 	}
-	public int getId() {
+	public Supplier(String id, String name, long phoneNumber, String email, String drugName, long drugPrice) {
+		super();
+		this.id = id;
+		this.name = name;
+		this.phoneNumber = phoneNumber;
+		this.email = email;
+		this.drugName = drugName;
+		this.drugPrice = drugPrice;
+	}
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getName() {
@@ -51,15 +60,6 @@ public class Supplier {
 		return drugPrice;
 	}
 	public void setDrugPrice(long drugPrice) {
-		this.drugPrice = drugPrice;
-	}
-	public Supplier(int id, String name, long phoneNumber, String email, String drugName, long drugPrice) {
-		super();
-		this.id = id;
-		this.name = name;
-		this.phoneNumber = phoneNumber;
-		this.email = email;
-		this.drugName = drugName;
 		this.drugPrice = drugPrice;
 	}
 	

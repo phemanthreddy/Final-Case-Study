@@ -6,23 +6,23 @@ import org.springframework.data.annotation.Id;
 @Document(collection = "Drug")
 public class Drug {
 	@Id
-	private int id;
+	private String id;
 	private String drugName;
 	private long price;
 	public Drug() {
 		super();
-		// TODO Auto-generated constructor stub
+		
 	}
-	public Drug(int id, String drugName, long price) {
+	public Drug(String id, String drugName, long price) {
 		super();
 		this.id = id;
 		this.drugName = drugName;
 		this.price = price;
 	}
-	public int getId() {
+	public String getId() {
 		return id;
 	}
-	public void setId(int id) {
+	public void setId(String id) {
 		this.id = id;
 	}
 	public String getDrugName() {
@@ -38,7 +38,5 @@ public class Drug {
 		this.price = price;
 	}
 	
-	
-
 
 }
