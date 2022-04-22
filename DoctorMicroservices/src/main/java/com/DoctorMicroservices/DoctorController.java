@@ -15,6 +15,7 @@ public class DoctorController {
 		private DoctorRepository doctorrepo;
 		
 		@PostMapping("/addDoctor")
+		
 		public Doctor addDoctor(@RequestBody Doctor doctor)
 		{
 			return doctorrepo.save(doctor);
