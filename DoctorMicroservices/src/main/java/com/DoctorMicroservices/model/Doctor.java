@@ -1,4 +1,4 @@
-package com.DoctorMicroservices;
+package com.DoctorMicroservices.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
