@@ -6,7 +6,6 @@ import java.util.Map;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -15,6 +14,9 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import com.DrugInventoryMicroservices.Exceptions.DrugAlreadyExistException;
+import com.DrugInventoryMicroservices.Exceptions.DrugNotFoundException;
 
 
 @RestController
@@ -25,18 +27,34 @@ public class DrugController {
 	private DrugRepository drugrepo;
 	
 	@PostMapping("/addDrug")
-	public Drug addDrug(@RequestBody Drug drug)
-	{
-		return drugrepo.save(drug);
+	public Drug addDrug(@RequestBody Drug drugrequest) {
+	Optional<Drug> drug = drugrepo.findById(drugrequest.getId());
+	if(!drug.isPresent()) {
+		return drugrepo.save(drugrequest);
 	}
+	else {
+		throw new DrugAlreadyExistException("Drug Already exists");
+	}
+}
+	
 	@GetMapping("/viewDrugs")
 	public List<Drug> viewDrug() {
 		return drugrepo.findAll();
 	}
 	@GetMapping("/viewDrug/{id}")
 	public Optional<Drug> viewDrugById(@PathVariable(value="id") String id) {
-		return drugrepo.findById(id);
+		Optional<Drug> drug= drugrepo.findById(id);
+		if(!drug.isPresent()) {
+			throw new DrugNotFoundException("Drug doesnot exist");
+			
+		}
+		else {
+			return drugrepo.findById(id);
+		}
+		
+	
 	}
+
 	@PutMapping("/updateDrug/{id}")
 	public Drug updateDrug(@PathVariable(value="id")String id,@RequestBody Drug drug){
 		Optional<Drug> olddrug = drugrepo.findById(id);

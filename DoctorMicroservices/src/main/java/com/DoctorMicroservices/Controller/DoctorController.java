@@ -12,13 +12,29 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.client.RestTemplate;
 
+import com.DoctorMicroservices.Repository.DoctorRepository;
+import com.DoctorMicroservices.Services.Orders;
+import com.DoctorMicroservices.model.Doctor;
+
 @RestController
 @RequestMapping("/doctor")
 public class DoctorController {
 	
 	@Autowired
 	private RestTemplate restTemplate;
+
+	@Autowired
+	private DoctorRepository doctorrepo;
 	
+	@PostMapping("/addDoctor")
+	public Doctor addDoctor(@RequestBody Doctor doctor)
+	{
+		return doctorrepo.save(doctor);
+	}
+	@GetMapping("/viewDoctors")
+	public List<Doctor> viewDoctor() {
+		return doctorrepo.findAll();
+	}
 	
 	//Drugs
 	
@@ -57,7 +73,12 @@ public class DoctorController {
 		String url="http://localhost:8085/orders/viewOrders/"+id;
 		return restTemplate.getForObject(url, Object.class);
 		}
-		
+	
+	@PostMapping("/addOrders")
+	public Orders addOrdersInventoryInfo(@RequestBody Orders orders ) {
+
+		 return restTemplate.postForObject("http://localhost:8085/orders/addOrders", orders, Orders.class);
+	}
 	
 }
 
