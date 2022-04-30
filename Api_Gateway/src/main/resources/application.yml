@@ -1,0 +1,41 @@
+server:
+  port: 8099
+  
+spring:
+  application:
+    name: API_GAte
+    
+   
+  cloud:
+    gateway:
+      routes:
+      - id: ADMIN-APPLICATION
+        uri:
+          lb://ADMIN-APPLICATION
+        predicates:
+        - Path=/admin/**
+        
+      - id: DOCTOR-MICROSERVICE
+        uri:
+          lb://DOCTOR-MICROSERVICE
+        predicates:
+        - Path=/doctor/**
+        
+      - id: DRUG-INVENTORY
+        uri:
+          lb://DRUG-INVENTORY
+        predicates:
+        - Path=/drug/**
+        
+      - id: ORDER-MICROSERVICE
+        uri:
+          lb://ORDER-MICROSERVICE
+        predicates:
+        - Path=/orders/**
+         
+      - id: SUPP-MICROSERVICE
+        uri:
+          lb://SUPP-MICROSERVICE
+        predicates:
+        - Path=/supplier/**
+ 
