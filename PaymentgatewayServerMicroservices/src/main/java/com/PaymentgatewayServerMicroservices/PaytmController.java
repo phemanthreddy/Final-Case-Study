@@ -21,6 +21,7 @@ import com.paytm.pg.merchant.PaytmChecksum;
 @Controller
 public class PaytmController {
 	
+	
 	@Autowired
 	private PaytmDetails paytmDetails;
 	@Autowired
