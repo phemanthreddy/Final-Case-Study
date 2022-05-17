@@ -1,92 +1,95 @@
 package com.DoctorMicroservices.Controller;
 
-import java.util.Arrays;
+
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.authentication.AuthenticationManager;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.client.RestTemplate;
 
 import com.DoctorMicroservices.Repository.DoctorRepository;
-import com.DoctorMicroservices.Services.Orders;
-import com.DoctorMicroservices.model.Doctor;
+import com.DoctorMicroservices.Services.DoctorService;
+import com.DoctorMicroservices.Services.JwtUtils;
+import com.DoctorMicroservices.model.AuthenticationRequest;
+import com.DoctorMicroservices.model.AuthenticationResponse;
+import com.DoctorMicroservices.model.DoctorModel;
 
+
+@CrossOrigin("*")
 @RestController
-@RequestMapping("/doctor")
 public class DoctorController {
 	
-	@Autowired
-	private RestTemplate restTemplate;
+@Autowired
+private DoctorRepository doctorRepository;
 
-	@Autowired
-	private DoctorRepository doctorrepo;
+@Autowired
+private DoctorService doctorService;
+
+@Autowired
+private JwtUtils jwtUtils;
+
+@Autowired
+private PasswordEncoder bCryptPasswordEncoder;
+
+@Autowired
+private AuthenticationManager authenticationManager;
+//---------------------------Registration and Login -------------------------------//
+
+
+@GetMapping("/finddoctor")
+public List<DoctorModel> getdoctor() {
+	return doctorRepository.findAll();
+}
 	
-	@PostMapping("/addDoctor")
-	public Doctor addDoctor(@RequestBody Doctor doctor)
+@PostMapping("/reg")
+	private ResponseEntity<?> subscribeClient(@RequestBody AuthenticationRequest authenticationRequest)
 	{
-		return doctorrepo.save(doctor);
-	}
-	@GetMapping("/viewDoctors")
-	public List<Doctor> viewDoctor() {
-		return doctorrepo.findAll();
-	}
-	
-	//Drugs
-	
-
-	@GetMapping("/viewDrugs")
-	public List<Object> getAllDrugInventoryInfo(){
+		String doctorname = authenticationRequest.getDoctorname();
+		String password = authenticationRequest.getPassword();
+		String emailid = authenticationRequest.getEmailid();
+		String contactno = authenticationRequest.getContactno();
 		
-		String url="http://localhost:8084/drug/viewDrugs";
-		Object[] objects= restTemplate.getForObject(url, Object[].class);
-		return Arrays.asList(objects);
-	}
-
-
-	@GetMapping("/viewDrug/{id}")
-	public Object getDrugInventoryById(@RequestParam String id){
+		String enpwd = bCryptPasswordEncoder.encode(password);
 		
-		String url="http://localhost:8084/drug/viewDrug/"+id;
-		return restTemplate.getForObject(url, Object.class);
+		DoctorModel doctorModel = new DoctorModel();
+        doctorModel.setDoctorname(doctorname);
+        doctorModel.setPassword(enpwd);
+        doctorModel.setContactno(contactno);
+        doctorModel.setEmailid(emailid);
+        try {
+        	doctorRepository.save(doctorModel);
 		}
-	
-	
-	//Orders
-	
-	@GetMapping("/viewOrders")
-	public List<Object> getAllOrdersInventoryInfo(){
-		
-		String url="http://localhost:8085/orders/viewOrders";
-		Object[] objects= restTemplate.getForObject(url, Object[].class);
-		return Arrays.asList(objects);
-	}
 
 
-	@GetMapping("/viewOrders/{id}")
-	public Object getOrdersInventoryById(@RequestParam String id){
-		
-		String url="http://localhost:8085/orders/viewOrders/"+id;
-		return restTemplate.getForObject(url, Object.class);
+		catch (Exception e)
+		{
+			return ResponseEntity.ok(new AuthenticationResponse("Error During Auth for Doctor "+ doctorname));
 		}
-	
-	@PostMapping("/addOrders")
-	public Orders addOrdersInventoryInfo(@RequestBody Orders orders ) {
-
-		 return restTemplate.postForObject("http://localhost:8085/orders/addOrders", orders, Orders.class);
+		return ResponseEntity.ok(new AuthenticationResponse("Successful Auth " + doctorname));
 	}
-	
+	@PostMapping("/auth")
+	private ResponseEntity<?> authenticateClient(@RequestBody AuthenticationRequest authenticationRequest)
+	{
+		String doctorname = authenticationRequest.getDoctorname();
+		String password = authenticationRequest.getPassword();
+
+//--------------------------------CRUD Operations----------------------//
+	try {
+		authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(doctorname, password));
+	} catch (Exception e) {
+		return ResponseEntity.ok(new AuthenticationResponse("Error while authenticating " + doctorname));
+	}
+	UserDetails loadedUser = doctorService.loadUserByUsername(doctorname);
+	String generatedToken = jwtUtils.generateToken(loadedUser);
+	return ResponseEntity.ok(new AuthenticationResponse(generatedToken));
 }
 
-
-	
-	
-	
-	
-	
-
-
+}

@@ -1,17 +1,17 @@
-package com.OrdersMicroservices;
+package com.DoctorMicroservices.model;
 
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
-@Document(collection = "Orders")
-public class Orders {
+@Document(collection = "Pickup")
+public class Pickup {
 	
 	@Id
 	private long id;
 	private String drugName;
 	private long drugPrice;
 
-	public Orders() {
+	public Pickup() {
 		super();
 	}
 
@@ -39,7 +39,7 @@ public class Orders {
 		this.drugPrice = drugPrice;
 	}
 
-	public Orders(long id, String drugName, long drugPrice) {
+	public Pickup(long id, String drugName, long drugPrice) {
 		super();
 		this.id = id;
 		this.drugName = drugName;

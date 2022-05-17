@@ -7,17 +7,18 @@ import org.springframework.data.mongodb.core.mapping.Document;
 public class Supplier {
 	
 	@Id
-	private String id;
+	private long id;
 	private String name;
 	private long phoneNumber;
 	private String email;
 	private String drugName;
 	private long drugPrice;
+
 	public Supplier() {
 		super();
-	
 	}
-	public Supplier(String id, String name, long phoneNumber, String email, String drugName, long drugPrice) {
+
+	public Supplier(long id, String name, long phoneNumber, String email, String drugName, long drugPrice) {
 		super();
 		this.id = id;
 		this.name = name;
@@ -26,10 +27,10 @@ public class Supplier {
 		this.drugName = drugName;
 		this.drugPrice = drugPrice;
 	}
-	public String getId() {
+	public long getId() {
 		return id;
 	}
-	public void setId(String id) {
+	public void setId(long id) {
 		this.id = id;
 	}
 	public String getName() {
